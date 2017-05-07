@@ -25,7 +25,7 @@ if __name__ == '__main__':
         print (tf.reduce_mean(-tf.reduce_sum(labels * tf.log(softed), reduction_indices=[0]))).eval()
 ```
 
-It prints `500.0` for first one and `nan` for second one,
+It prints `500.0` for the first one and `nan` for the second one, as you can see it doesn't calculate the exact loss value, only approximately return it. The approach is very simple, actually is reduce every score from the max score, so in this case [1000, 2000, 2500], after reducing 2500 we have [-1500, -500, 0], then it uses this values without squashing them with Softmax, note that the negative values will be removed with negative sign in the formula: `tf.reduce_mean(-tf.reduce_sum(labels * tf.log(softed), reduction_indices=[0]))`, and this is the method I use in my code.
 
 ### Problem of Numerically Unstable:
 
@@ -34,21 +34,21 @@ actually happen in large numbers, this problem arises when the logits from the n
 
 - p1 = exp(1000) / exp(1000) + exp(2000) + exp(2500)
 - p2 = exp(2000) / exp(1000) + exp(2000) + exp(2500)
-- p2 = exp(2500) / exp(1000) + exp(2000) + exp(2500)
+- p3 = exp(2500) / exp(1000) + exp(2000) + exp(2500)
 
-Since python (specifically python version 2.7.11) returns 'inf' (infinity) for values more than 709 in exp() function. So for example in case p2 we have:
+Since python (specifically python version 2.7.11) returns 'inf' (infinity) for values more than 709 in exp() function, i.e, in case p2 we have:
 
-- divide numerator and denominator by exp value of numerator,
-- then we have 1 / exp(-1000) + 1 + exp(1500)
-- in this case the numerator is 1 and denominator is very large number due exp(1500)
-- the result will be very very small number like 1.E-50 (aproximatly), which can't display with any variable in python, so it will be saved as zero.
-- in case p2 if we divide numerator and denominator by 2500 so we will have: 1 / 1 + a + b, a and b are very small numbers, so the result will be approximately 0.99999...
-- the result after softmax normalizing will be: predictions= [0, 0, 1]
-- consider the middle one as 1 in ground truth: labels= [0, 1, 0]
-- now we should calculate the cross-entropy loss
-- cross-entropy loss is equal:  - sum( labels * tf.log(predictions) ) / n
-- so we have: 0.log(0) + 1.log(0) + 0.log(1) = 0 + NaN + 0 = NaN (Not a Number)
-- this NaN value as cost cause network learn nothing
+- Divide numerator and denominator by exp value of numerator,
+- Then we have 1 / exp(-1000) + 1 + exp(1500)
+- In this case the numerator is 1 and denominator is very large number due exp(1500)
+- The result will be very very small number number like 1.E-50 (approximately), which will be saved as zero.
+- In case p3 if we divide numerator and denominator by 2500 so we will have: 1 / 1 + a + b, a and b are very small numbers, so the result will be approximately 0.99999...
+- The result after softmax normalizing will be: predictions= [0, 0, 1]
+- Consider the middle one as 1 in ground truth: labels= [0, 1, 0]
+- Now we should calculate the cross-entropy loss
+- Cross-entropy loss is equal:  -sum( labels * tf.log(predictions) ) / n
+- So we have: 0.log(0) + 1.log(0) + 0.log(1) = 0 + NaN + 0 = NaN (Not a Number)
+- This NaN value as cost cause network learn nothing
 
 ### Accuracy Function in Multi-label Task:
 
