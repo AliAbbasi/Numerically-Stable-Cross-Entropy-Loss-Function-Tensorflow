@@ -3,9 +3,9 @@ This is only show that how the 'softmax_cross_entropy_with_logits()' function in
 
 Based on Tensorflow document (link to mnist example) without using the 'softmax_cross_entropy_with_logits()' function for calculating loss in Tensorflow, we face the problem of numerically unstable results, actually happen in large numbers, this problem arises when the logits from the network output are large numbers, so python returns 'inf' in result, consider our network has 3 output, and they are large numbers such: [1000, 2000, 2500], now we should sqush this logits with Softmax function to have probabilities:
 
-p1 = exp(1000) / exp(1000) + exp(2000) + exp(2500)
-p2 = exp(2000) / exp(1000) + exp(2000) + exp(2500)
-p2 = exp(2500) / exp(1000) + exp(2000) + exp(2500)
+- p1 = exp(1000) / exp(1000) + exp(2000) + exp(2500)
+- p2 = exp(2000) / exp(1000) + exp(2000) + exp(2500)
+- p2 = exp(2500) / exp(1000) + exp(2000) + exp(2500)
 
 Since python (more specificly python version 2.7.11) returns 'inf' (infinity) for values more than 709 in exp() function. So for example in case p2 we have:
 
