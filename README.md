@@ -3,12 +3,7 @@ This is only show that how the 'softmax_cross_entropy_with_logits()' function in
 The "Numerically-Stable-Cross-Entropy-SingleLabel.py" file represent the cost function for single label problems and "Numerically-Stable-Cross-Entropy-MultiLabel.py" represents the cost function for multi-label (specificly two label) problems.
 
 ### Numerically Stable Cross Entropy Loss Function:
-Since the large numbers in `exp()` function of python returns 'inf' (more than 709 in python 2.7.11), so in these version of cross entropy loss without 'softmax_cross_entropy_with_logits()' function, I used a condition of checking the highest value in logits, which is determined by `threshold` variable in code.
-
-### Accuracy Function in Multi-label Task:
-
-Note that in the multi-label problems since the calculating accuracy is a little bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
-
+Since the large numbers in `exp()` function of python returns 'inf' (more than 709 in python 2.7.11), so in these version of cross entropy loss without 'softmax_cross_entropy_with_logits()' function, I used a condition of checking the highest value in logits, which is determined by `threshold` variable in code. For larger scores in logit it use to approximate the loss, but for smaller scores it use ordinary way to calculate loss.
 
 ### Notes on 'softmax_cross_entropy_with_logits()' Function in Tensorflow:
 
@@ -55,4 +50,7 @@ Since python (specifically python version 2.7.11) returns 'inf' (infinity) for v
 - so we have: 0.log(0) + 1.log(0) + 0.log(1) = 0 + NaN + 0 = NaN (Not a Number)
 - this NaN value as cost cause network learn nothing
 
+### Accuracy Function in Multi-label Task:
+
+Note that in the multi-label problems since the calculating accuracy is a little bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
 
