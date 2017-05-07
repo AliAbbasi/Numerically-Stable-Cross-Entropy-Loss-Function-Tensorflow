@@ -3,11 +3,11 @@ This is only show that how the 'softmax_cross_entropy_with_logits()' function in
 The "Numerically-Stable-Cross-Entropy-SingleLabel.py" file represent the cost function for single label problems and "Numerically-Stable-Cross-Entropy-MultiLabel.py" represents the cost function for multi-label (specificly two label) problems.
 
 ### Numerically Stable Cross Entropy Loss Function:
-Since the large numbers in `exp()` functoin of python returns 'inf' (more than 709 in python 2.7.11), so in these version of cross entropy loss without 'softmax_cross_entropy_with_logits()' function, I used a condition of checking the highest value in logits, which is determined by `threshold` variable in code.
+Since the large numbers in `exp()` function of python returns 'inf' (more than 709 in python 2.7.11), so in these version of cross entropy loss without 'softmax_cross_entropy_with_logits()' function, I used a condition of checking the highest value in logits, which is determined by `threshold` variable in code.
 
 ### Accuracy Function in Multi-label Task:
 
-Note that in the multi-label problems since the calculating accuracy is a littile bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
+Note that in the multi-label problems since the calculating accuracy is a little bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
 
 
 ### Notes on 'softmax_cross_entropy_with_logits()' Function in Tensorflow:
@@ -41,13 +41,13 @@ actually happen in large numbers, this problem arises when the logits from the n
 - p2 = exp(2000) / exp(1000) + exp(2000) + exp(2500)
 - p2 = exp(2500) / exp(1000) + exp(2000) + exp(2500)
 
-Since python (more specificly python version 2.7.11) returns 'inf' (infinity) for values more than 709 in exp() function. So for example in case p2 we have:
+Since python (specifically python version 2.7.11) returns 'inf' (infinity) for values more than 709 in exp() function. So for example in case p2 we have:
 
 - divide numerator and denominator by exp value of numerator,
 - then we have 1 / exp(-1000) + 1 + exp(1500)
 - in this case the numerator is 1 and denominator is very large number due exp(1500)
 - the result will be very very small number like 1.E-50 (aproximatly), which can't display with any variable in python, so it will be saved as zero.
-- in case p2 if we divide numerator and denominator by 2500 so we will have: 1 / 1 + a + b, a and b are very small numbers, so the result will be aproximatly 0.99999...
+- in case p2 if we divide numerator and denominator by 2500 so we will have: 1 / 1 + a + b, a and b are very small numbers, so the result will be approximately 0.99999...
 - the result after softmax normalizing will be: predictions= [0, 0, 1]
 - consider the middle one as 1 in ground truth: labels= [0, 1, 0]
 - now we should calculate the cross-entropy loss
