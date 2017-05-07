@@ -1,8 +1,8 @@
 This is only show that how the 'softmax_cross_entropy_with_logits()' function in Tensorflow internally works without numerically unstable problem and estimate the exp() of large numbers.
  
 The "Numerically-Stable-Cross-Entropy-SingleLabel.py" file represent the cost function for single label problems and "Numerically-Stable-Cross-Entropy-MultiLabel.py" represents the cost function for multi-label (specificly two label) problems.
----
-## Accuracy Function in Multi-label Task:
+
+### Accuracy Function in Multi-label Task:
 
 Note that in the multi-label problems since the calculating accuracy is a littile bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
 
