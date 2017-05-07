@@ -13,6 +13,11 @@ Since python (more specificly python version 2.7.11) returns 'inf' (infinity) fo
 - then we have 1 / exp(-1000) + 1 + exp(1500)
 - in this case the numerator is 1 and denominator is very large number due exp(1500)
 - the result will be very very small number like 1.E-50 (aproximatly), which can't display with any variable in python, so it will be saved as zero.
+- in case p2 if we divide numerator and denominator by 2500 so we will have: 1 / 1 + a + b, a and b are very small numbers, so the result will be aproximatly 0.99999...
+- the result after softmax normalizing will be: [0, 0, 1]
+- consider the middle one as groud truth
+- now we should calculate the cross-entropy loss
+- 
 
  
 The "Numerically-Stable-Cross-Entropy-SingleLabel.py" file  
