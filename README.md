@@ -2,6 +2,11 @@ This is only show that how the 'softmax_cross_entropy_with_logits()' function in
  
 The "Numerically-Stable-Cross-Entropy-SingleLabel.py" file represent the cost function for single label problems and "Numerically-Stable-Cross-Entropy-MultiLabel.py" represents the cost function for multi-label (specificly two label) problems.
 
+### Accuracy Function in Multi-label Task:
+
+Note that in the multi-label problems since the calculating accuracy is a littile bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
+
+
 ### Notes on 'softmax_cross_entropy_with_logits()' Function in Tensorflow:
 
 Actually this function doesn't calculate the exact loss (in large numbers), and only approximate it. Let's try this simple code in python and check the results:
@@ -22,9 +27,7 @@ if __name__ == '__main__':
         print (tf.reduce_mean(-tf.reduce_sum(labels * tf.log(softed), reduction_indices=[0]))).eval()
 ```
 
-### Accuracy Function in Multi-label Task:
-
-Note that in the multi-label problems since the calculating accuracy is a littile bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
+It prints `500.0` for first one and `nan` for second one,
 
 ### Problem of Numerically Unstable:
 
