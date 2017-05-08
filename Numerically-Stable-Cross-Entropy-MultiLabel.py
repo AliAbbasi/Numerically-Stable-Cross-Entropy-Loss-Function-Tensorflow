@@ -62,11 +62,12 @@ class ConvNet( object ):
     def largeCost(self):
         score_split = tf.split(1, 2, self.score_ )  
         for i in range(len(score_split)):
-            maxScore = tf.reduce_max( score_split[i] ,[1] ) 
-            score_split[i] -= tf.transpose(maxScore)
+            maxScore = tf.reduce_max( score_split[i] ,[1] )
+            maxScore = tf.reshape(maxScore, shape = (300,1)) # 300 is batch_size
+            score_split[i] -= maxScore 
         all_in_one  = tf.concat(1, score_split) 
         total_loss  = tf.reduce_mean(-tf.reduce_sum ( self.y_  * all_in_one , [1] ) )    
-        return  total_loss 
+        return  total_loss  
     
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
