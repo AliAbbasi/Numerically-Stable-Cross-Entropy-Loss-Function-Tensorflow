@@ -60,20 +60,18 @@ class Network( object ):
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ 
     
     def largeCost(self): 
-        maxScore    = tf.reduce_max( self.score ,[1] )
-        maxScore    = tf.reshape(maxScore, shape = (300, 1))   #300 is batch_size 
+        maxScore    = tf.reduce_max( self.score ,[1] ) 
         temp        = self.score 
-        temp       -= maxScore
+        temp       -= tf.transpose(maxScore)
         total_loss  = tf.reduce_mean(-tf.reduce_sum ( self.y * temp , [1] ) )   
         return total_loss 
     
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
     def smallCost(self):   
-        maxScore   = tf.reduce_max( self.score ,[1] )
-        maxScore   = tf.reshape(maxScore, shape = (300, 1)) # 300 is batch_size 
+        maxScore   = tf.reduce_max( self.score ,[1] ) 
         temp       = self.score 
-        temp      -= maxScore 
+        temp      -= tf.transpose(maxScore) 
         softed     = tf.nn.softmax(temp) 
         total_loss = tf.reduce_mean( -tf.reduce_sum ( self.y * tf.log( softed ), [1] ) )   
         return total_loss 
