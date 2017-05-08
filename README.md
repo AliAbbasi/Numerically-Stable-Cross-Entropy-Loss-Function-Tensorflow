@@ -54,3 +54,6 @@ Since python (specifically python version 2.7.11) returns 'inf' (infinity) for v
 
 Note that in the multi-label problems since the calculating accuracy is a little bit different that ordinary way, in the "Numerically-Stable-Cross-Entropy-MultiLabel.py", 'perfFun()' function returns two boolean tensor each represents the accuracy in one dimension of multi-label task, you should merge these two boolean tensor inside the session to calculate the final accuracy.
 
+### 'costFun2' inside "Numerically-Stable-Cross-Entropy-MultiLabel.py":
+
+There is two cost function for multi-label classification task, the second one use 'softmax_cross_entropy_with_logits()' function, and you can see both of functions compute the same cost value as result.
