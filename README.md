@@ -19,10 +19,10 @@ if __name__ == '__main__':
     labels = np.array([0   , 1   , 0   ], dtype=np.float32)
     
     with tf.Session() as sess:
-        print (tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits( logits, labels ))).eval()
-        
+        print (tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits( logits=logits, labels=labels )).eval())
+
         softed = tf.nn.softmax(logits)
-        print (tf.reduce_mean(-tf.reduce_sum(labels * tf.log(softed), reduction_indices=[0]))).eval()
+        print (tf.reduce_mean(-tf.reduce_sum(labels * tf.log(softed), reduction_indices=[0])).eval())
 ```
 
 It prints `500.0` for the first one and `nan` for the second one, as you can see it doesn't calculate the exact loss value, only approximately return it. The approach is very simple, actually is reduce every score from the max score, so in this case [1000, 2000, 2500], after reducing 2500 we have [-1500, -500, 0], then it uses this values without squashing them with Softmax, note that the negative values will be removed with negative sign in the formula: `tf.reduce_mean(-tf.reduce_sum(labels * tf.log(softed), reduction_indices=[0]))`, and this is the method I use in my code.
